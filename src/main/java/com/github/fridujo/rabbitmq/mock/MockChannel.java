@@ -718,6 +718,10 @@ public class MockChannel implements Channel {
         return node.getQueue(queueName);
     }
 
+    public Object isQueueDeclared(String queueName) {
+        return null;
+    }
+
     private static class ReturnListenerAdapter implements ReturnListener {
         private final ReturnCallback callback;
 
