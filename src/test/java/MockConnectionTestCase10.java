@@ -1,13 +1,15 @@
 package com.github.fridujo.rabbitmq.mock;
 
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 public class MockConnectionTestCase10 {
 
     @Test
-    void publishingAfterConnectionClose_shouldThrowOrPassSilently() throws Exception {
+    void publishingAfterConnectionClose_shouldNotThrowOrPassSilently() throws Exception {
         MockConnectionFactory factory = new MockConnectionFactory();
         MockConnection connection = (MockConnection) factory.newConnection();
         MockChannel channel = (MockChannel) connection.createChannel();
@@ -18,10 +20,9 @@ public class MockConnectionTestCase10 {
         // Close the connection
         connection.close();
 
-        // Now try to publish after connection is closed
+        // Try to publish after connection is closed
         assertDoesNotThrow(() -> {
-            channel.basicPublish("", queueName, null, "Message after connection close".getBytes());
-        }, "Publishing after closing connection should not throw (mock behavior)");
+            channel.basicPublish("", queueName, null, "Message".getBytes());
+        }, "Publishing after closing connection should not throw an exception");
     }
 }
-
